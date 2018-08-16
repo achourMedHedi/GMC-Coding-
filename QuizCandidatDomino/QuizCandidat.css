@@ -1,0 +1,104 @@
+.main {
+    height: 400px ; 
+    background-color: white ; 
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    right : 15% ;
+    /* border: 1px  grey ;  */
+    /* box-shadow: .2px .2px .2px .2px grey  */
+}
+
+button {
+    background: transparent ; 
+    border : 0 ;
+    cursor: pointer;
+}
+
+.line1a {
+    background: tomato;
+    border: 3px solid black;
+}
+
+
+
+.QuestionBlock {
+    height: 50% ; 
+    background-color: rgb(243, 242, 242)
+}
+
+.Qnumber {
+    position: absolute;
+    top: 15px;
+    left:25px;
+    background-color: rgb(97, 97, 235);
+    width:30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.Qnumber span {
+    position: absolute;
+    color:white ;
+    top : 5px;
+    right: 11px;
+}
+
+.QuestionText {
+    position: relative;
+    left: 40% ;
+    top: 20px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color : rgb(36, 36, 241);
+}
+
+.Qtimer {
+    position: absolute;
+    top: 15px;
+    right:25px;
+    width:30px;
+    height: 30px;
+}
+.Qtimer span {  
+    position: absolute;
+    color:Black ;
+    right: 5px;
+    font-size: 20px;
+}
+
+.AnswerBlock {
+    text-align: initial;
+    position: relative;
+    left : 50px;
+    top : 30px;
+}
+
+.AnswerItem {
+    display: list-item;
+    position: relative;
+    margin-top: 5px;
+}
+
+.AnswerItem button {
+    background-color: white;
+    border:0;
+    cursor: pointer;
+}
+
+.AnswerItem button:hover {
+    background-color: rgb(243, 242, 242)
+}
+
+.steps {
+    text-align: justify ; 
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* bottom : -55px ; */
+    /* left: 340px; */
+    /* left : -45px ; */
+    /* bottom : -55px ;  */
+}
