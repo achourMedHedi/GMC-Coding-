@@ -1,0 +1,17 @@
+.body {
+    border : 1px solid black ; 
+    display:  flex ;
+}
+.resultBody {
+    border-left: 5px solid red ; 
+    flex : 1 ;
+    background: aquamarine
+}
+.form {
+    background-color: blue;
+    flex : 1 ;
+}
+
+.dominoX {
+    border: 2px solid black
+}
