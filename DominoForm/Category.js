@@ -1,14 +1,16 @@
 import React from 'react'
-
+import {SelectField} from 'react-md'
 const Category = (props) => {
+    const category = ["w" , "E" , "V"]
     return (
-        <div>
-            <select onChange={(event)=> props.changeCategory(event.target.value)}>
-                <option>first</option>
-                <option>first</option>
-                <option>first</option>
-            </select>
-        </div>
+        <SelectField 
+        onChange={(value , event)=>props.changeCategory(value)}
+        id="select-field-5"
+        placeholder="Choose Category"
+        className="md-cell"
+        menuItems={category}
+        position={SelectField.Positions.BELOW}
+    />
 
     )
 }

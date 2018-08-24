@@ -4,6 +4,10 @@ import './DominoForm.css'
 import Dominos from './Dominos';
 import Answer from './Answer'
 import Result from './Result'
+import {ExpansionPanel , Slider , ExpansionList} from 'react-md'
+
+
+
 export default class DominoForm extends React.Component {
 
     state = ({
@@ -75,29 +79,32 @@ export default class DominoForm extends React.Component {
         console.log('====================================');
         return (
             <div className="body">
+            {/* result */}
+                <div className="resultBody">
+                    {<Result 
+                    dominoArray = {this.state.domino.quizes[0].dominoArray} 
+                    answer={this.state.domino.quizes[0].dominoAnswer}
+                    />}
+                </div>
             {/* form input */}
                 <div className="form">
                     <Category 
                     changeCategory={this.onChangeCategory} 
                     />
+                   
                     <Dominos 
                     domino={this.state.domino.quizes[0].dominoArray} 
                     onChangeDomino={this.onChangeDominoArray}
                     onAddDomino={this.onAddDomino}
                     onDeleteDomino={this.onDeleteDomino}
                     />
+                    <br/><br/>
                     <Answer 
                     onChangeAnswer = {this.onChangeAnswer}
                     answer = {this.state.domino.quizes[0].dominoAnswer}
                     />
                 </div>
-            {/* result */}
-                <div className="resultBody">
-                    <Result 
-                    dominoArray = {this.state.domino.quizes[0].dominoArray} 
-                    answer={this.state.domino.quizes[0].dominoAnswer}
-                    />
-                </div>
+            
             </div>
         )
     }

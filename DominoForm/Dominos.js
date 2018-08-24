@@ -1,5 +1,6 @@
 import React from 'react'
 import { DominoImage } from './DominoImage';
+import {ExpansionPanel,Button } from 'react-md'
 
 class Dominos extends React.Component {
 
@@ -47,26 +48,123 @@ class Dominos extends React.Component {
         <div>
             {this.props.domino.map((el , index) => {
                 return (
-                    <div className="dominoX">
-                    {/*<button onClick={()=>{
-                        this.props.onChangeDomino(index , {"hahaha" : 'lololo'})}
-                    }>click me  {index}
-                </button>*/},
-                
-                    <div>Domino {index} </div>,
-                    <div>TopHalf : {el.topHalf} , {this.state.images.map((element,i)=>{return( <button onClick={()=>this.onChangeTopHalf(index , element , el.bottomHalf)} > <DominoImage number={element} /> </button>  )})} </div>
-                    <div>BottomHald : {el.bottomHalf},{this.state.images.map((element,i)=>{return( <button onClick={()=>this.onChangeBottomHalf(index , element , el.topHalf)} > <DominoImage number={element} /> </button>  )})}  </div>
-                    <div>back to line :  <button onClick={()=>this.onChangeBreak(index ,el.topHalf , el.bottomHalf)} >{el.break ? 'true' : 'false'} </button> </div>
-                    
-                    <button onClick={()=>this.onDeleteDomino(index)} >DELETE {index} </button>
-                    {console.log(el)}
-
-                    </div>
+                    <ExpansionPanel 
+                    label={`Domino ${index+1}`}
+                    footer={null}
+                    headerStyle={el.break ? {backgroundColor : 'red'} : {backgroundColor : 'white'}}
+                    >
+                        <div className="dominoX">
+                        {/*<button onClick={()=>{
+                            this.props.onChangeDomino(index , {"hahaha" : 'lololo'})}
+                        }>click me  {index}
+                    </button>*/}
+                        <div className="leftSide">
+                            {/*<span>Choose the elements of the domino pieces</span>*/}
+                            <div>
+                                {this.state.images.map((element,i)=>{
+                                    return( 
+                                        el.topHalf === i 
+                                        ? 
+                                        <button 
+                                        style={{backgroundColor : 'gray'}} 
+                                        onClick={()=>this.onChangeTopHalf(index , element , el.bottomHalf)} > 
+                                        <DominoImage number={element} 
+                                        /> 
+                                        </button>  
+                                        : 
+                                        (
+                                            i===7 && el.topHalf === -1 ?
+                                            <button 
+                                            style={{backgroundColor : 'gray'}}                                             
+                                            onClick={()=>this.onChangeTopHalf(index , element , el.bottomHalf)} > 
+                                            <DominoImage 
+                                            number={element} 
+                                            /> 
+                                            </button>  :
+                                            <button 
+                                            onClick={()=>this.onChangeTopHalf(index , element , el.bottomHalf)} > 
+                                            <DominoImage 
+                                            number={element} 
+                                            /> 
+                                            </button>  
+                                        )
+                                    )
+                                    }
+                                )
+                            } 
+                            </div>
+                            <div>{this.state.images.map((element,i)=>{return( 
+                                el.bottomHalf === i 
+                                        ? 
+                                        <button 
+                                        style={{backgroundColor : 'gray'}} 
+                                        onClick={()=>this.onChangeBottomHalf(index , element , el.topHalf)} > 
+                                        <DominoImage number={element} 
+                                        /> 
+                                        </button>  
+                                        : 
+                                        (
+                                            i===7 && el.bottomHalf === -1 ?
+                                            <button 
+                                            style={{backgroundColor : 'gray'}}                                             
+                                            onClick={()=>this.onChangeBottomHalf(index , element , el.topHalf)} > 
+                                            <DominoImage 
+                                            number={element} 
+                                            /> 
+                                            </button>  :
+                                            <button 
+                                            onClick={()=>this.onChangeBottomHalf(index , element , el.topHalf)} > 
+                                            <DominoImage 
+                                            number={element} 
+                                            /> 
+                                            </button>  
+                                        )
+                                    )
+                                }
+                            )
+                        } 
+                        </div>
+                            <div style={{marginLeft : '6px'}} > {el.break ? <Button  flat secondary swapTheming onClick={()=>this.onChangeBreak(index ,el.topHalf , el.bottomHalf)} >Back To Line </Button> : <Button  flat primary swapTheming onClick={()=>this.onChangeBreak(index ,el.topHalf , el.bottomHalf)} >Back To Line </Button>} </div>
+                            
+                            {console.log(el)}
+                        
+                        </div>
+                        <div className="middleSide" >
+                            <span className="box" ></span>
+                            <span className="triangle" ></span>
+                        </div>
+                        <div className="rightSide" >
+                            <table className="domino" >
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <DominoImage number={el.topHalf} />
+                                            <div style={{marginTop : "-3px"}} ></div>
+                                            <DominoImage number={el.bottomHalf} />
+                                        </td>
+                                        {el.break && <td style={{position : 'relative' , top : 32}} className="backLine"></td>}                                    
+                                        
+                                    </tr>
+                                    <tr>
+                                        {el.break && <td className="backLineArrow"></td>}                                    
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <Button flat secondary swapTheming style={{float : 'right'}} onClick={()=>this.onDeleteDomino(index)} >DELETE </Button>
+                            
+                        </div>
+                        
+                        </div>
+                    </ExpansionPanel>
                 )
             })}
-            <button onClick={()=>{
+            <Button onClick={()=>{
                 this.onAddDomino()
-            }} >add domino</button>
+            }}
+            style={{backgroundColor : "orange"}}
+            className="addDomino"  
+            flat  
+            swapTheming>add domino</Button>
         </div>
     )
 }

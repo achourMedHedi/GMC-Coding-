@@ -1,17 +1,69 @@
 .body {
-    border : 1px solid black ; 
-    display:  flex ;
+    /* border : 1px solid black ;  */
+    /* display:  flex ; */
 }
 .resultBody {
-    border-left: 5px solid red ; 
-    flex : 1 ;
-    background: aquamarine
+    /* border-left: 5px solid red ;  */
+    /* flex : 1 ; */
+    /* background: aquamarine */
 }
 .form {
-    background-color: blue;
-    flex : 1 ;
+    /* background-color: blue; */
+    /* flex : 1 ; */
 }
 
 .dominoX {
-    border: 2px solid black
+    /* border: 2px solid black */
+    display: flex ;
+}
+.leftSide {
+    flex: 5 ;
+}
+.middleSide {
+    flex: 3;
+    display: flex ;
+}
+.middleSide .box {
+    flex: 1;
+    width : 50px;
+    height: 50px;
+    background-color: black;
+    margin-top: 15px;
+}
+.middleSide .triangle {
+    flex: 1;
+    width: 0; 
+    height: 0; 
+    border-top: 40px solid transparent;
+    border-bottom: 40px solid transparent;
+    
+    border-left: 60px solid black;
+}
+.rightSide {
+    flex: 5;
+}
+
+.rightSide .domino {
+}
+li {
+    list-style-type:  none ;
+}
+
+.backLine {
+    width: 14px ;
+    background-color: black;
+}
+.backLineArrow {
+    position: relative;
+    bottom: 7px ;
+    width: 0; 
+    height: 0; 
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+    
+    border-right: 33px solid black;
+}
+
+.addDomino {
+    float:right;
 }
