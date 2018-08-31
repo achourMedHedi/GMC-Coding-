@@ -1,27 +1,118 @@
 import React from 'react' 
 import {Button } from 'react-md'
+import {Paper} from 'react-md'
+
+
+const img1 = require('../DominoForm/dominos/1.png')
+const img2 = require('../DominoForm/dominos/2.png')
+const img3 = require('../DominoForm/dominos/3.png')
+const img4 = require('../DominoForm/dominos/4.png')
+const img5 = require('../DominoForm/dominos/5.png')
+const img6 = require('../DominoForm/dominos/6.png')
+const img0 = require('../DominoForm/dominos/0.png')
+
+
 export default class Memory extends React.Component {
     constructor(props) {
         super(props) 
         this.state={
-            memory : [
-                {img : "https://www.mon-qi.com/test-memoire/memory2/img/3/D.png" , token :1 ,flip : false},
-                {img : "https://www.mon-qi.com/test-memoire/memory2/img/3/D.png" , token :1 ,flip : false},
-                {img : "https://www.mon-qi.com/test-memoire/memory2/img/3/4.png" , token :2 ,flip : false},
-                {img : "https://www.mon-qi.com/test-memoire/memory2/img/3/4.png" , token :2 ,flip : false},
-            ],
+            images : [img1 , img2 , img3 , img4 , img5 , img6 ,img0 , img1] , 
+            memoryArray : { 
+                "_id" : "" , 
+                "nbImg" : 4 ,
+                "type" : "" , 
+                "category" : "" ,
+                "__v" : 0
+            }  ,
             answer : [] ,
-            clicks : 0
-            // result : []
-            
-
+            clicks : 0,
+            blockUser : false , 
+            shuffle : false
         }
-        this.setState ({
-            memory : this.shuffle(this.state.memory) 
+        
+    }
+
+
+    
+
+    componentWillMount = () => {
+
+        //initialize quizes array with empty objects
+        this.initializeArray()
+        
+    }
+
+    componentDidMount = () => {
+        // initialize quizes array with (id , token , img , flip)
+        this.state.memoryArray.quizes[0].img === undefined && this.addImg() 
+        // !this.state.shuffle && this.shuffleImg()
+    }
+    componentWillUpdate = () => {
+        //block user when he get a false answer =====>>>  image 1 !== image 2
+        this.state.answer.length === 1 && this.setState({blockUser:true})
+
+        //shuffle images 
+        !this.state.shuffle && this.shuffleImg()
+        
+    }
+
+
+    //shuffle images 
+    shuffleImg = () => {
+        return this.setState({
+            memoryArray : {...this.state.memoryArray , "quizes" : this.shuffle(this.state.memoryArray.quizes)} , 
+            shuffle : true
         })
     }
+
+
+    //initialize quizes array with empty objects
+    initializeArray = () => {
+        let array = []
+        for (let index = 0; index < this.state.memoryArray.nbImg; index++) {
+            // console.log("ena lena");
+            array.push({})
+        }
+        // console.log({array});
+        return this.setState({
+            memoryArray : {...this.state.memoryArray , "quizes" : array}
+        })
+
+            
+        }
     
-     shuffle(a) {
+
+
+    //initializeArray quizes array with (token , id , img , flip )
+    addImg= () => {
+        let token = -1     
+        let indexImg = -1   
+        return this.setState({
+            memoryArray : {...this.state.memoryArray , 
+                "quizes" : this.state.memoryArray.quizes.map (
+                    (el , i) => 
+                        {
+                            if (token < (this.state.memoryArray.quizes.length / 2) - 1) {
+                                token = token + 1 
+                                indexImg = indexImg + 1 
+                            }
+                            else (
+                                token = 0 ,
+                                indexImg = 0
+                            )
+
+
+
+                            return (
+                            {...el , img : this.state.images[indexImg] , id : i , token : token , flip : false}
+                            ) 
+                    }
+                )}
+        })
+    }
+   
+    //shuffle function
+    shuffle(a) {
         for (let i = a.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [a[i], a[j]] = [a[j], a[i]];
@@ -29,82 +120,62 @@ export default class Memory extends React.Component {
         return a;
     }
     
+    //add images to an array called answers 
+    //so we can compare the 2 images flipped
     Answer = (token , index) => {
         this.setState({
-            answer : [...this.state.answer ,  token  ]
+            answer : [...this.state.answer ,  {answer : token , index : index}  ]
         }) , this.flip(index)
     }
 
 
-
+    // flip the image when user click on it     
     flip = (index) => {
-        let q = this.state.memory
-        // (this.state.answer[1]  && this.state.answer[1] === this.state.answer[0] )? 
-
-        if ((this.state.answer[1] && this.state.answer[1]===this.state.answer[0] ) ) {
-            q[index] =  {...q[index] , flip : true }
-            return this.setState({
-                memory : q
-            }) , console.log("1")
-            
-        }
-        else if(!this.state.answer[0])
-        {
-            q[index] = {...q[index] , flip : true } 
-            return this.setState({
-                memory : q
-            }) , console.log("2")
-        } 
-        // else if (this.state.answer[1]!==this.state.answer[0] ) 
-        // {
-        //     q[index] = {...q[index] , flip : true }             
-            // return setTimeout(() => {
-            //     q[index] = {...q[index] , flip : false } 
-            //     this.setState({
-            //         memory : q
-            //     })
-            // }, 2000);
-             
-        // }
-        // q[index] = {...q[index] , flip : true } 
+        let q = [...this.state.memoryArray.quizes]
+        q[index] = {...q[index] , flip : true } 
         
-        else if (this.state.answer[1]===this.state.answer[0] )
-        return setTimeout(() => {
-            q[index] = {...q[index] , flip : false } 
-            this.setState({
-                memory : q
-            }) , console.log("3") 
-        }, 2000);
-        // return this.setState({
-        //     memory : q
-        // })
-    }
-
-    trueUpdateMemory = (index) => {
-        let q = this.state.memory
-        q[index] = {...q[index] , flip : true}
         return this.setState({
-            memory : q
+            memoryArray : {...this.state.memoryArray , "quizes" : q}
         })
-    }
-    falseUpdateMemory = (index) => {
-        let q = this.state.memory
-        return setTimeout(() => {
-            q[index] = {...q[index] , flip : false}
-            this.setState({
-            memory : q
-        })
-        }, 2000);
+        
     }
 
+
+    //when image 1 === image 2 , images will stay flipped  
+    trueAnswer = () => {
+        return this.setState({
+            answer : [] ,
+            clicks : this.state.clicks + 1 , 
+            blockUser : false
+        }) , console.log('true answer')
+    }
+
+    // if image 1 !== image 2 after 1 seconds  images will flip to false 
+    falseAnswer = () => {
+        let q = [...this.state.memoryArray.quizes]
+        let answerOne  = this.state.answer[0].index
+        let answerTwo  = this.state.answer[1].index
+        q[answerOne] = {...q[answerOne] , flip : false}
+        q[answerTwo] = {...q[answerTwo] , flip : false}
+        return setTimeout(() => {
+            this.setState({
+                answer : [] ,
+                blockUser : false ,
+                clicks : this.state.clicks + 1 , 
+                memoryArray : {...this.state.memoryArray , "quizes" : q}
+            })
+        }, 1000);
+    }
+
+    // when user finish , this will calculate  the score and percentage  
     Done = () => {
-        let q = this.state.memory.filter(el => el.flip == false)
+        let q = this.state.memoryArray.quizes.filter(el => el.flip == false)
         let click = this.state.clicks 
-        const idealeClicks = this.state.memory.length / 2
+        const idealeClicks = this.state.memoryArray.quizes.length / 2
         let clickPer = (idealeClicks * 100) / click
 
         console.log("clicks = " , this.state.clicks)
-        console.log("lengthMemory = " ,this.state.memory.length / 2)
+        console.log("lengthMemory = " ,this.state.memoryArray.quizes.length / 2)
         console.log("click per = " , clickPer)
         console.log("q === ",q) 
         if (q.length === 0) {
@@ -113,51 +184,156 @@ export default class Memory extends React.Component {
         else return true
     }
 
+    // display the test images 
+    displayImg = () => {
+        // if images number is 4 or 8 
+        if (this.state.memoryArray.nbImg === 8 || this.state.memoryArray.nbImg === 4) {
+            return this.state.memoryArray.quizes.map(
+                (el , index) => 
+                    {
+                        return <span>
+                            {(index === this.state.memoryArray.quizes.length/2) && <br/>}                        
+                            {el.flip ? 
+                                <img key={index} src={el.img}/>
+                                :
+                                (
+                                    this.state.blockUser ?
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    />
+                                    :
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    onClick={() => this.Answer(el.token , index)}
+                                    />
+                                )
+                            }
+                        </span>
+                    }
+                ) 
+        }
+        // if images number is 16
+        else if (this.state.memoryArray.nbImg === 16) {
+            return this.state.memoryArray.quizes.map(
+                (el , index) => 
+                    {
+                        return <span>
+                            {(index%4 === 0) && <br/>}                        
+                            {el.flip ? 
+                                <img key={index} src={el.img}/>
+                                :
+                                (
+                                    this.state.blockUser ?
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    />
+                                    :
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    onClick={() => this.Answer(el.token , index)}
+                                    />
+                                )
+                            }
+                        </span>
+                    }
+                ) 
+        }
+        // if images number is 36
+        else if (this.state.memoryArray.nbImg === 36) {
+            return this.state.memoryArray.quizes.map(
+                (el , index) => 
+                    {
+                        return <span>
+                            {(index%6 === 0) && <br/>}                        
+                            {el.flip ? 
+                                <img key={index} src={el.img}/>
+                                :
+                                (
+                                    this.state.blockUser ?
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    />
+                                    :
+                                    <img key={index} 
+                                    src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                    onClick={() => this.Answer(el.token , index)}
+                                    />
+                                )
+                            }
+                        </span>
+                    }
+                ) 
+        }
+        // else display all images in same line      
+            else {
+                return this.state.memoryArray.quizes.map(
+                    (el , index) => 
+                        {
+                            return <span>
+                                {el.flip ? 
+                                    <img key={index} src={el.img}/>
+                                    :
+                                    (
+                                        this.state.blockUser ?
+                                        <img key={index} 
+                                        src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                        />
+                                        :
+                                        <img key={index} 
+                                        src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" 
+                                        onClick={() => this.Answer(el.token , index)}
+                                        />
+                                    )
+                                }
+                            </span>
+                        }
+                    ) 
+            }
+    }
+
 
 
     render () { 
         return (
             <div>
-                {this.state.memory.map(
-                    (el , index) => 
-                    {
-                        return <span>
-                            {(index === this.state.memory.length/2) && <br/>}                        
-                            {el.flip ? 
-                                <img key={index} src={el.img}/>
-                                :
-                                <img key={index} src="https://www.mon-qi.com/test-memoire/memory2/img/face.png" onClick={() => this.Answer(el.token , index)}/>
-                            }
-                        </span>
-                    }
-                ) 
-            }
-                {
-                this.state.answer[0] && 
-                this.state.answer[1] &&
-                this.state.answer[0] === this.state.answer[1] &&
-                 this.state.memory.map((el , index) => {
-                    if (this.state.answer[0] === el.token) {
-                        return this.trueUpdateMemory(index)
-                    }
-                }) &&
-                this.setState({answer:[] , clicks : this.state.clicks + 1}) 
-                }
-                {
-                    this.state.answer[0] && 
-                    this.state.answer[1] &&
-                    this.state.answer[0] !== this.state.answer[1] &&
-                    this.state.memory.map((el , index) => {
-                        if (this.state.answer[0] === el.token) {
-                            return this.falseUpdateMemory(index)
+            
+                <Paper 
+                style={{margin : '100px' }}
+                zDepth = {1}
+                >
+                <center>
+                Click on the cards to associate them in pairs of 2. <br/>
+                        {
+                            // display images 
+                            this.state.memoryArray.quizes && this.displayImg()
                         }
-                    }) &&
-                    this.setState({answer:[] , clicks : this.state.clicks + 1}) 
-                }
 
-                {
-                    this.Done()
-                }
+                        {
+                            //if it's a true answer
+                            this.state.answer[0] && 
+                            this.state.answer[1] && this.state.answer[0].answer === this.state.answer[1].answer  &&
+                            this.trueAnswer() 
+                        }
+                        {
+                            //if it's a false answer
+                            this.state.answer[0] && 
+                            this.state.answer[1] && this.state.answer[0].answer !== this.state.answer[1].answer  && 
+                            this.falseAnswer() 
+                        }
+                        {
+                            //end of question
+                            this.Done()
+                        }
+                       
+                    </center>
+                </Paper>
+
+
+
+
+                <b />
+
+                
             </div>
 
         )
